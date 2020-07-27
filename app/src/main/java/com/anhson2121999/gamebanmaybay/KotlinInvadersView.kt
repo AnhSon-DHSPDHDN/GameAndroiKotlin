@@ -143,11 +143,11 @@ class KotlinInvadersView(context: Context,
 
     private fun menacePlayer() {
         if (uhOrOh) {
-            // Play Uh
+            // Uh
             soundPlayer.playSound(SoundPlayer.uhID)
 
         } else {
-            // Play Oh
+            // Oh
             soundPlayer.playSound(SoundPlayer.ohID)
         }
         // đặt lại thời gian
@@ -185,23 +185,18 @@ class KotlinInvadersView(context: Context,
                                     + invader.width / 2,
                                     invader.position.top, playerBullet.down)) {
 
-                        // Shot fired
-                        // Prepare for the next shot
+                        // Chuẩn bị lần bắn tiếp
                         nextBullet++
 
-                        // Loop back to the first one if we have reached the last
+                        // Lặp lại nếu Max đạn
                         if (nextBullet == maxInvaderBullets) {
-                            // This stops the firing of bullet
-                            // until one completes its journey
-                            // Because if bullet 0 is still active
-                            // shoot returns false.
+                            // nếu hết địch dừng bắn.
                             nextBullet = 0
                         }
                     }
                 }
 
-                // If that move caused them to bump
-                // the screen change bumped to true
+                // Kiểm tra chạm màn hình
                 if (invader.position.left > size.x - invader.width
                         || invader.position.left < 0) {
 
@@ -211,12 +206,12 @@ class KotlinInvadersView(context: Context,
             }
         }
 
-        // Update the players playerBullet
+        // Cập nhật đạn ng chơi
         if (playerBullet.isActive) {
             playerBullet.update(fps)
         }
 
-        // Update all the invaders bullets if active
+        // Đạn địch
 
         for (bullet in invadersBullets) {
             if (bullet.isActive) {
@@ -224,13 +219,13 @@ class KotlinInvadersView(context: Context,
             }
         }
 
-        // Did an invader bump into the edge of the screen
+        // Có 1 tàu địch chạm vào góc màn hình
         if (bumped) {
 
-            // Move all the invaders down and change direction
+            // Chuyển hướng + dịch xuống
             for (invader in invaders) {
                 invader.dropDownAndReverse(waves)
-                // Have the invaders landed
+                // Địch đổ bộ thành công
                 if (invader.position.bottom >= size.y && invader.isVisible) {
                     lost = true
                 }
@@ -242,14 +237,14 @@ class KotlinInvadersView(context: Context,
             playerBullet.isActive =false
         }
 
-        // Has an invaders playerBullet hit the bottom of the screen
+        // Đạn chạm đỉnh màn hình
         for (bullet in invadersBullets) {
             if (bullet.position.top > size.y) {
                 bullet.isActive = false
             }
         }
 
-        // Has the player's playerBullet hit an invader
+        // Đạn trúng địch
         if (playerBullet.isActive) {
             for (invader in invaders) {
                 if (invader.isVisible) {
@@ -264,7 +259,7 @@ class KotlinInvadersView(context: Context,
                             highScore = score
                         }
 
-                        // Has the player cleared the level
+                        // Hoàn thành màn chơi
                         //if (score == numInvaders * 10 * waves) {
                         if (Invader.numberOfInvaders == 0) {
                             paused = true
@@ -277,20 +272,20 @@ class KotlinInvadersView(context: Context,
                             break
                         }
 
-                        // Don't check any more invaders
+                        // k kiểm tra địch nữa
                         break
                     }
                 }
             }
         }
 
-        // Has an alien playerBullet hit a shelter brick
+        // Đạn trúng tường
         for (bullet in invadersBullets) {
             if (bullet.isActive) {
                 for (brick in bricks) {
                     if (brick.isVisible) {
                         if (RectF.intersects(bullet.position, brick.position)) {
-                            // A collision has occurred
+                            // Check va chạm
                             bullet.isActive = false
                             brick.isVisible = false
                             soundPlayer.playSound(SoundPlayer.damageShelterID)
@@ -301,12 +296,11 @@ class KotlinInvadersView(context: Context,
 
         }
 
-        // Has a player playerBullet hit a shelter brick
+        // Đạn người chơi trúng tường
         if (playerBullet.isActive) {
             for (brick in bricks) {
                 if (brick.isVisible) {
                     if (RectF.intersects(playerBullet.position, brick.position)) {
-                        // A collision has occurred
                         playerBullet.isActive = false
                         brick.isVisible = false
                         soundPlayer.playSound(SoundPlayer.damageShelterID)
@@ -315,7 +309,7 @@ class KotlinInvadersView(context: Context,
             }
         }
 
-        // Has an invader playerBullet hit the player ship
+        // Đạn địch trúng tàu
         for (bullet in invadersBullets) {
             if (bullet.isActive) {
                 if (RectF.intersects(playerShip.position, bullet.position)) {
@@ -323,7 +317,7 @@ class KotlinInvadersView(context: Context,
                     lives --
                     soundPlayer.playSound(SoundPlayer.playerExplodeID)
 
-                    // Is it game over?
+                    // Game over!!!
                     if (lives == 0) {
                         lost = true
                         break
@@ -345,24 +339,22 @@ class KotlinInvadersView(context: Context,
     }
 
     private fun draw() {
-        // Make sure our drawing surface is valid or the game will crash
         if (holder.surface.isValid) {
-            // Lock the canvas ready to draw
+            // Khóa Canvas
             canvas = holder.lockCanvas()
 
-            // Draw the background color
+            // Màu nền
             canvas.drawColor(Color.argb(255, 0, 0, 0))
 
-            // Choose the brush color for drawing
+            // Chọn màu
             paint.color = Color.argb(255, 0, 255, 0)
 
-            // Draw all the game objects here
-            // Now draw the player spaceship
+            // Vẽ đối tượng
             canvas.drawBitmap(playerShip.bitmap, playerShip.position.left,
                     playerShip.position.top
                     , paint)
 
-            // Draw the invaders
+            // Vẽ tàu địch
             for (invader in invaders) {
                 if (invader.isVisible) {
                     if (uhOrOh) {
@@ -385,39 +377,38 @@ class KotlinInvadersView(context: Context,
                 }
             }
 
-            // Draw the bricks if visible
+            // Vẽ tường
             for (brick in bricks) {
                 if (brick.isVisible) {
                     canvas.drawRect(brick.position, paint)
                 }
             }
 
-            // Draw the players playerBullet if active
+            // Đạn ng chơi
             if (playerBullet.isActive) {
                 canvas.drawRect(playerBullet.position, paint)
             }
 
-            // Draw the invaders bullets
+            // Đạn địch
             for (bullet in invadersBullets) {
                 if (bullet.isActive) {
                     canvas.drawRect(bullet.position, paint)
                 }
             }
 
-            // Draw the score and remaining lives
-            // Change the brush color
-            paint.color = Color.argb(255, 255, 255, 255)
-            paint.textSize = 70f
-            canvas.drawText("Score: $score   Lives: $lives Wave: " +
-                    "$waves HI: $highScore", 20f, 75f, paint)
 
-            // Draw everything to the screen
+            // Text
+            paint.color = Color.argb(100, 255, 0, 0)
+            paint.textSize = 50f
+            canvas.drawText("Điểm: $score   HP: $lives Màn chơi: " +
+                    "$waves Điểm cao: $highScore", 20f, 75f, paint)
+
+            // Vẽ mọi thứ
             holder.unlockCanvasAndPost(canvas)
         }
     }
 
-    // If SpaceInvadersActivity is paused/stopped
-    // then shut down our thread.
+
     fun pause() {
         playing = false
         try {
@@ -442,22 +433,21 @@ class KotlinInvadersView(context: Context,
         }
     }
 
-    // If SpaceInvadersActivity is started then
-    // start our thread.
+
+
     fun resume() {
         playing = true
         prepareLevel()
         gameThread.start()
     }
 
-    // The SurfaceView class implements onTouchListener
-    // So we can override this method and detect screen touches.
+    //SurfaceView class implements onTouchListener
+    // Phát hiện chạm màn hình
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
         when (motionEvent.action and MotionEvent.ACTION_MASK) {
 
-        // Player has touched the screen
-        // Or moved their finger while touching screen
+        // Chạm màn hình
             MotionEvent.ACTION_POINTER_DOWN,
             MotionEvent.ACTION_DOWN,
             MotionEvent.ACTION_MOVE-> {
@@ -484,7 +474,7 @@ class KotlinInvadersView(context: Context,
                 }
             }
 
-        // Player has removed finger from screen
+        // Thả tay ra màn hình
             MotionEvent.ACTION_POINTER_UP,
             MotionEvent.ACTION_UP -> {
                 if (motionEvent.y > size.y - size.y / 10) {

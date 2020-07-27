@@ -19,26 +19,25 @@ class PlayerShip(context: Context,
     val width = screenX / 10f
     private val height = screenY / 10f
 
-    // This keeps track of where the ship is
+    // Vị trí tàu hiện tại
     val position = RectF(
             screenX / 2f,
             screenY-height,
             screenX/2 + width,
             screenY.toFloat())
 
-    // This will hold the pixels per second speed that the ship will move
+    // Giữ tốc độ tàu di chuyển
     private val speed  = 450f
 
-    // This data is accessible using ClassName.propertyName
+    //Dữ liệu truy cập Class.property
     companion object {
-        // Which ways can the ship move
+        // Tàu di chuyển
         const val stopped = 0
         const val left = 1
         const val right = 2
     }
 
-    // Is the ship moving and in which direction
-    // Start off stopped
+    // Check tàu chuyern động
     var moving = stopped
 
     init{
@@ -50,11 +49,9 @@ class PlayerShip(context: Context,
                 false)
     }
 
-    // This update method will be called from update in
-    // KotlinInvadersView It determines if the player's
-    // ship needs to move and changes the coordinates
+    // Ng chơi di chuyển
     fun update(fps: Long) {
-        // Move as long as it doesn't try and leave the screen
+        // Di chuyển trong khu vực màn hình
         if (moving == left && position.left > 0) {
             position.left -= speed / fps
         }

@@ -31,17 +31,16 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
     var isVisible = true
 
     companion object {
-        // The alien ship will be represented by a Bitmap
+        // Tàu địch đại diện bởi 1 ảnh Bitmap
         var bitmap1: Bitmap? = null
         var bitmap2: Bitmap? = null
 
-        // keep track of the number of instances
-        // that are active
+        // Số lượng tàu
         var numberOfInvaders = 0
     }
 
     init {
-        // Initialize the bitmaps
+        // Initialize
         bitmap1 = BitmapFactory.decodeResource(
             context.resources,
             R.drawable.invader2)
@@ -50,15 +49,13 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
             context.resources,
             R.drawable.invader1)
 
-        // stretch the first bitmap to a size
-        // appropriate for the screen resolution
+        // Kéo bitmap phù hợp độ phân giải
         bitmap1 = Bitmap.createScaledBitmap(
             bitmap1!!,
             (width.toInt()),
             (height.toInt()),
             false)
 
-        // stretch the second bitmap as well
         bitmap2 = Bitmap.createScaledBitmap(
             bitmap2!!,
             (width.toInt()),
@@ -90,7 +87,7 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
         position.top += height
         position.bottom += height
 
-        // The later the wave, the more the invader speeds up
+        // Địch tăng tốc độ về sau
         speed *=  (1.1f + (waveNumber.toFloat() / 20))
     }
 
@@ -102,13 +99,12 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
         val generator = Random()
         var randomNumber: Int
 
-        // If near the player consider taking a shot
+        // Nếu gânf người chơi. Cân nhắc bắn
         if (playerShipX + playerShipLength > position.left &&
             playerShipX + playerShipLength < position.left + width ||
             playerShipX > position.left && playerShipX < position.left + width) {
 
-            // The fewer invaders the more each invader shoots
-            // The higher the wave the more the invader shoots
+            // Càng gần càng bắn
             randomNumber = generator.nextInt(100 * numberOfInvaders) / waves
             if (randomNumber == 0) {
                 return true
@@ -116,7 +112,7 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
 
         }
 
-        // If firing randomly (not near the player)
+        // Không gần người chơi
         randomNumber = generator.nextInt(150 * numberOfInvaders)
         return randomNumber == 0
 

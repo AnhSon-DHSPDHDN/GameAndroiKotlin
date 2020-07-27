@@ -8,11 +8,11 @@ class Bullet(screenY: Int,
 
     val position = RectF()
 
-    // Which way is it shooting
+    // Bắn lên hay bắn xuống
     val up = 0
     val down = 1
 
-    // Going nowhere
+    // bắn đi đâu
     private var heading = -1
 
     private val width = 2
@@ -37,14 +37,14 @@ class Bullet(screenY: Int,
 
     fun update(fps: Long) {
 
-        // Just move up or down
+        // Bắn lên hay xuống
         if (heading == up) {
             position.top -= speed / fps
         } else {
             position.top += speed / fps
         }
 
-        // Update the bottom position
+        // Update vị trí
         position.bottom = position.top + height
     }
 }

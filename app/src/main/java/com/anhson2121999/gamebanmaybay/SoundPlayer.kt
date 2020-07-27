@@ -25,12 +25,12 @@ class SoundPlayer(context: Context) {
 
     init {
         try {
-            // Create objects of the 2 required classes
+            // Tạo đối tượng
             val assetManager = context.assets
             var descriptor: AssetFileDescriptor
 
 
-            // Load our fx in memory ready for use
+            // Tải âm thanh
             descriptor = assetManager.openFd("shoot.ogg")
             shootID = soundPool.load(descriptor, 0)
 
@@ -54,7 +54,6 @@ class SoundPlayer(context: Context) {
 
 
         } catch (e: IOException) {
-            // Print an error message to the console
             Log.e("error", "failed to load sound files")
         }
     }
