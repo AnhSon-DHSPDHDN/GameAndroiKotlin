@@ -6,38 +6,35 @@ import android.os.Bundle
 
 class KotlinInvadersActivity : Activity() {
 
-    // kotlinInvadersView will be the view of the game
-    // It will also hold the logic of the game
-    // and respond to screen touches as well
+    // kotlinInvadersView: Main View cua Game, logic game, event touch
     private var kotlinInvadersView: KotlinInvadersView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Get a Display object to access screen details
         val display = windowManager.defaultDisplay
-        // Load the resolution into a Point object
+        // Lấy độ phân giải
         val size = Point()
         display.getSize(size)
 
-        // Initialize gameView and set it as the view
+        // Khởi tạo màn hình game
         kotlinInvadersView = KotlinInvadersView(this, size)
         setContentView(kotlinInvadersView)
     }
 
-    // This method executes when the player starts the game
+    // Bắt đầu trò chơi
     override fun onResume() {
         super.onResume()
 
-        // Tell the gameView resume method to execute
+        // TIếp tục game
         kotlinInvadersView?.resume()
     }
 
-    // This method executes when the player quits the game
+    // Khi thoát game
     override fun onPause() {
         super.onPause()
 
-        // Tell the gameView pause method to execute
+        // Tạm dừng game
         kotlinInvadersView?.pause()
     }
 }

@@ -10,14 +10,14 @@ class PlayerShip(context: Context,
                  private val screenX: Int,
                  screenY: Int) {
 
-    // The player ship will be represented by a Bitmap
+    // Bitmap đại diện máy bay
     var bitmap: Bitmap = BitmapFactory.decodeResource(
             context.resources,
             R.drawable.playership)
 
-    // How wide and high our ship will be
-    val width = screenX / 20f
-    private val height = screenY / 20f
+    // Size máy bay
+    val width = screenX / 10f
+    private val height = screenY / 10f
 
     // This keeps track of where the ship is
     val position = RectF(

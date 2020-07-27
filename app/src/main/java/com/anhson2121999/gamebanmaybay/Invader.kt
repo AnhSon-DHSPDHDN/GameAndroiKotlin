@@ -7,25 +7,25 @@ import java.util.*
 import android.graphics.BitmapFactory
 
 class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: Int) {
-    // How wide, high and spaced out are the invader will be
+    // size enemy. kc
     var width = screenX / 35f
     private var height = screenY / 35f
     private val padding = screenX / 45
 
     var position = RectF(
         column * (width + padding),
-        100 + row * (width + padding / 4),
+        100 + row * (width + padding/4),
         column * (width + padding) + width,
         100 + row * (width + padding / 4) + height
     )
 
-    // This will hold the pixels per second speed that the invader will move
+    // tốc độ di chuyển
     private var speed = 40f
 
     private val left = 1
     private val right = 2
 
-    // Is the ship moving and in which direction
+    // Check tàu cuhyeern động
     private var shipMoving = right
 
     var isVisible = true
@@ -44,11 +44,11 @@ class Invader(context: Context, row: Int, column: Int, screenX: Int, screenY: In
         // Initialize the bitmaps
         bitmap1 = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.invader1)
+            R.drawable.invader2)
 
         bitmap2 = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.invader2)
+            R.drawable.invader1)
 
         // stretch the first bitmap to a size
         // appropriate for the screen resolution

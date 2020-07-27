@@ -13,73 +13,69 @@ class KotlinInvadersView(context: Context,
     : SurfaceView(context),
         Runnable {
 
-    // For making a noise
+    // Âm thanh game
     private val soundPlayer = SoundPlayer(context)
 
-    // This is our thread
+    // Game chính
     private val gameThread = Thread(this)
 
-    // A boolean which we will set and unset
     private var playing = false
 
-    // Game is paused at the start
+    // tạm dừng
     private var paused = true
 
-    // A Canvas and a Paint object
+    // Canvas vẽ đối tượng
     private var canvas: Canvas = Canvas()
     private val paint: Paint = Paint()
 
-    // The players ship
+    // Máy Bay
     private var playerShip: PlayerShip = PlayerShip(context, size.x, size.y)
 
-    // Some Invaders
+    // Dối thủ
     private val invaders = ArrayList<Invader>()
     private var numInvaders = 0
 
-    // The player's shelters are built from bricks
+    // Công trình thủ
     private val bricks = ArrayList<DefenceBrick>()
     private var numBricks: Int = 0
 
-    // The player's playerBullet
-    // much faster and half the length
-    // compared to invader's bullet
+    // Đạn của người chơi
     private var playerBullet = Bullet(size.y, 1200f, 40f)
 
-    // The invaders bullets
+    // Đạn của địch
     private val invadersBullets = ArrayList<Bullet>()
     private var nextBullet = 0
     private val maxInvaderBullets = 10
 
-    // The score
+    // Điểm
     private var score = 0
 
-    // The wave number
+    // lớp đối thủ
     private var waves = 1
 
-    // Lives
+    // quân còn lại
     private var lives = 3
 
-    // To remember the high score
+    // Ghi điểm cao nhất
     private val prefs: SharedPreferences = context.getSharedPreferences(
             "Kotlin Invaders",
             Context.MODE_PRIVATE)
 
     private var highScore =  prefs.getInt("highScore", 0)
 
-    // How menacing should the sound be?
+    // khoảng cách
     private var menaceInterval: Long = 1000
 
-    // Which menace sound should play next
+    // âm thanh
     private var uhOrOh: Boolean = false
-    // When did we last play a menacing sound
+    // âm thanh lần trước
     private var lastMenaceTime = System.currentTimeMillis()
 
 
 
 
     private fun prepareLevel() {
-        // Here we will initialize the game objects
-        // Build an army of invaders
+        // Khởi tạo địch
         Invader.numberOfInvaders = 0
         numInvaders = 0
         for (column in 0..10) {
@@ -94,7 +90,7 @@ class KotlinInvadersView(context: Context,
             }
         }
 
-        // Build the shelters
+        // Xây tường thủ
         numBricks = 0
         for (shelterNumber in 0..4) {
             for (column in 0..18) {
@@ -110,36 +106,36 @@ class KotlinInvadersView(context: Context,
             }
         }
 
-        // Initialize the invadersBullets array
+        // Khởi tạo đạn quân địch
         for (i in 0 until maxInvaderBullets) {
             invadersBullets.add(Bullet(size.y))
         }
     }
 
     override fun run() {
-        // This variable tracks the game frame rate
+        // kiểm tra fps
         var fps: Long = 0
 
         while (playing) {
 
-            // Capture the current time
+            // thời điêm hiện tại
             val startFrameTime = System.currentTimeMillis()
 
-            // Update the frame
+            // Cập nhật fps
             if (!paused) {
                 update(fps)
             }
 
-            // Draw the frame
+            // Vẽ ảnh mới
             draw()
 
-            // Calculate the fps rate this frame
+            // tốc độ fps
             val timeThisFrame = System.currentTimeMillis() - startFrameTime
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame
             }
 
-            // Play a sound based on the menace level
+            // Âm thanh nguy kịch
             if (!paused && ((startFrameTime - lastMenaceTime) > menaceInterval))
                 menacePlayer()
         }
@@ -154,39 +150,37 @@ class KotlinInvadersView(context: Context,
             // Play Oh
             soundPlayer.playSound(SoundPlayer.ohID)
         }
-
-        // Reset the last menace time
+        // đặt lại thời gian
         lastMenaceTime = System.currentTimeMillis()
-        // Alter value of uhOrOh
+        // cập nhật âm thanh
         uhOrOh = !uhOrOh
 
     }
 
     private fun update(fps: Long) {
-        // Update the state of all the game objects
+        // Cập nhật trạng thái
 
-        // Move the player's ship
+        // di chuyển máy bay
         playerShip.update(fps)
 
-        // Did an invader bump into the side of the screen
+        // Kiểm tra đối thủ va vào màn hình
         var bumped = false
 
-        // Has the player lost
+        // Check THUA
         var lost = false
 
-        // Update all the invaders if visible
+        // cập nhật kẻ thù
         for (invader in invaders) {
 
             if (invader.isVisible) {
-                // Move the next invader
+                // kẻ thù di chuỷen
                 invader.update(fps)
 
-                // Does he want to take a shot?
                 if (invader.takeAim(playerShip.position.left,
                                 playerShip.width,
                                 waves)) {
 
-                    // If so try and spawn a bullet
+                    // Bắn
                     if (invadersBullets[nextBullet].shoot(invader.position.left
                                     + invader.width / 2,
                                     invader.position.top, playerBullet.down)) {
